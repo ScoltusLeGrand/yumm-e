@@ -1,86 +1,91 @@
-'use client'
+"use client"
+
 import { useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
-import { useRouter } from 'next/navigation'
 
-// Initialisation du client Supabase avec tes variables d'environnement
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+export default function RegisterPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    level: 'beginner',
+    goal: ''
+  })
 
-export default function Register() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [msg, setMsg] = useState('')
-  const [loading, setLoading] = useState(false)
-  const router = useRouter() // Initialisation du routeur pour la redirection
-
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    setMsg('')
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-
-    if (error) {
-      setMsg("Erreur : " + error.message)
-      setLoading(false) // On arrête le chargement pour permettre de corriger
-    } else {
-      setMsg("Succès ! Redirection vers ton espace...")
-      
-      // On attend un tout petit peu pour que l'utilisateur voit le message de succès
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 1500)
-    }
+    // Génère un message WhatsApp automatique avec les infos du formulaire
+    const message = `Hello Yummy! Inscription de ${formData.name}. Niveau: ${formData.level}. Objectif: ${formData.goal}`
+    window.open(`https://wa.me/+243993413998?text=${encodeURIComponent(message)}`, '_blank')
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-6">
-      <div className="w-full max-w-md p-8 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
-        <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-          English Yummy
-        </h1>
-        <p className="text-zinc-500 text-center mb-8">Crée ton compte pour accéder aux cours</p>
+    <div className="min-h-screen bg-black text-white pt-32 pb-20">
+      <div className="max-w-2xl mx-auto px-6">
+        
+        <div className="mb-12">
+          <h1 className="text-5xl font-black tracking-tighter uppercase mb-4">Join the <span className="text-blue-500 italic font-light text-4xl block">Academy</span></h1>
+          <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">Formulaire d'inscription aux leçons</p>
+        </div>
 
-        <form onSubmit={handleSignUp} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-1">Email</label>
+        <form onSubmit={handleSubmit} className="space-y-8 border-t border-zinc-900 pt-12">
+          {/* NOM */}
+          <div className="group">
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-600 mb-2 group-focus-within:text-blue-500 transition-colors">Nom Complet</label>
             <input 
+              required
+              type="text" 
+              className="w-full bg-transparent border-b border-zinc-800 py-4 outline-none focus:border-white transition-colors text-xl"
+              placeholder="John Doe"
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+            />
+          </div>
+
+          {/* EMAIL */}
+          <div className="group">
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-600 mb-2 group-focus-within:text-blue-500 transition-colors">Email</label>
+            <input 
+              required
               type="email" 
-              required
-              className="w-full p-3 rounded-xl bg-zinc-800 border border-zinc-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-              placeholder="exemple@email.com"
-              onChange={(e) => setEmail(e.target.value)} 
+              className="w-full bg-transparent border-b border-zinc-800 py-4 outline-none focus:border-white transition-colors text-xl"
+              placeholder="votre@email.com"
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-1">Mot de passe</label>
-            <input 
-              type="password" 
-              required
-              className="w-full p-3 rounded-xl bg-zinc-800 border border-zinc-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-              placeholder="••••••••"
-              onChange={(e) => setPassword(e.target.value)} 
-            />
+
+          {/* NIVEAU */}
+          <div className="group">
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-600 mb-6">Niveau Actuel</label>
+            <div className="grid grid-cols-3 gap-4">
+              {['beginner', 'intermediate', 'advanced'].map((lvl) => (
+                <button
+                  key={lvl}
+                  type="button"
+                  onClick={() => setFormData({...formData, level: lvl})}
+                  className={`py-3 rounded-full border text-[10px] uppercase tracking-widest transition-all ${formData.level === lvl ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:border-zinc-600'}`}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* OBJECTIF */}
+          <div className="group">
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-600 mb-2 group-focus-within:text-blue-500 transition-colors">Votre Objectif</label>
+            <textarea 
+              className="w-full bg-transparent border-b border-zinc-800 py-4 outline-none focus:border-white transition-colors text-xl resize-none"
+              placeholder="Ex: Voyager aux USA, Business..."
+              rows={2}
+              onChange={(e) => setFormData({...formData, goal: e.target.value})}
+            ></textarea>
+          </div>
+
           <button 
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50"
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-white hover:text-black py-6 rounded-2xl font-black uppercase text-xs tracking-[0.3em] transition-all mt-12"
           >
-            {loading ? "Chargement..." : "S'inscrire"}
+            Envoyer ma demande
           </button>
         </form>
-
-        {msg && (
-          <div className={`mt-6 p-4 rounded-xl text-center text-sm ${msg.includes('Erreur') ? 'bg-red-900/20 text-red-400' : 'bg-green-900/20 text-green-400'}`}>
-            {msg}
-          </div>
-        )}
       </div>
     </div>
   )
