@@ -7,7 +7,7 @@ export default function PartnershipsPage() {
           Partenariats & Collaboration
         </h1>
         <p className="text-xl text-zinc-400">
-          Propulsez votre marque auprès d'une communauté engagée de plus de 100 000 passionnés d'anglais sur TikTok.
+          Propulsez votre marque auprès d'une communauté engagée de plus de 100 000 passionnés par mon contenu TikTok.
         </p>
       </div>
 
@@ -35,14 +35,14 @@ export default function PartnershipsPage() {
             <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mr-6 text-blue-500">📱</div>
             <div>
               <h3 className="text-xl font-bold">Placement de produit TikTok</h3>
-              <p className="text-zinc-400 text-sm">Intégration naturelle de votre service dans mes leçons quotidiennes.</p>
+              <p className="text-zinc-400 text-sm">Intégration naturelle de votre service dans mes vidéos.</p>
             </div>
           </div>
           <div className="flex items-center p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
             <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mr-6 text-purple-500">🎥</div>
             <div>
               <h3 className="text-xl font-bold">Vidéo dédiée / Review</h3>
-              <p className="text-zinc-400 text-sm">Présentation complète et détaillée de votre application ou méthode d'anglais.</p>
+              <p className="text-zinc-400 text-sm">Présentation complète et détaillée de vos produits ou services.</p>
             </div>
           </div>
         </div>
