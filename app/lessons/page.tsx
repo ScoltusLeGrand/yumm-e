@@ -6,7 +6,7 @@ const supabase = createClient(
 )
 
 export default async function LessonsPage() {
-  // On récupère les données de la table 'Lessons' (avec un L majuscule comme dans ta base)
+  // On récupère les données de la table 'Lessons' (avec un L majuscule)
   const { data: lessons, error } = await supabase.from('Lessons').select('*')
 
   if (error) {
